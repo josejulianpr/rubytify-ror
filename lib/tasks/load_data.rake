@@ -4,6 +4,8 @@ namespace :load_data do
     require 'rspotify'
     require 'yaml'
 
+    Song.delete_all
+    Album.delete_all
     Artist.delete_all
 
     puts "Starting data load"
@@ -27,21 +29,29 @@ namespace :load_data do
 
       #Get Albums
       albums = artist_information.albums
-      albums.each { |album|
-        album.name
-        album.images.first['url']
-        album.external_urls['spotify']
-        album.total_tracks
-        album.id
+      albums.each { |album_info|
 
-        tracks = album.tracks
-        tracks.each { |track|
-          track.name
-          track.external_urls['spotify']
-          track.preview_url
-          track.duration_ms
-          track.explicit
-          track.id
+        album = Album.create(
+          name: album_info.name,
+          image: album_info.images.first['url'],
+          spotify_url: album_info.external_urls['spotify'],
+          total_tracks: album_info.total_tracks,
+          spotify_id: album_info.id,
+          artist: artist
+        )
+
+        songs = album_info.tracks
+        songs.each { |song_info|
+
+          Song.create(
+            name: song_info.name,
+            spotify_url: song_info.external_urls['spotify'],
+            preview_url: song_info.preview_url,
+            duration_ms: song_info.duration_ms,
+            explicit: song_info.explicit,
+            spotify_id: song_info.id,
+            album: album
+          )
         }
       }
 
