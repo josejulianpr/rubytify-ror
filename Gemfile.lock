@@ -121,6 +121,7 @@ GEM
     omniauth-oauth2 (1.7.2)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
+    pg (1.2.3)
     public_suffix (4.0.6)
     puma (3.12.6)
     racc (1.6.0)
@@ -178,7 +179,6 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.2)
     thor (1.1.0)
     thread_safe (0.3.6)
     tzinfo (1.2.9)
@@ -197,12 +197,12 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   listen (>= 3.0.5, < 3.2)
+  pg
   puma (~> 3.11)
   rails (~> 5.2.3)
   rspotify
   spring
   spring-watcher-listen (~> 2.0.0)
-  sqlite3
   tzinfo-data
 
 RUBY VERSION

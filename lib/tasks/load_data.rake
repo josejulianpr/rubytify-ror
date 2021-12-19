@@ -4,7 +4,10 @@ namespace :load_data do
     require 'rspotify'
     require 'yaml'
 
-    puts "Hello World"
+    Artist.delete_all
+
+    puts "Starting data load"
+
     artists_list = YAML.load_file('artists.yml')
     artists_list['artists'].each { |i|
 
@@ -12,23 +15,24 @@ namespace :load_data do
       artists = RSpotify::Artist.search(i.to_s)
 
       #Get information
-      arctic_monkeys = artists.first
-      arctic_monkeys.name
-      arctic_monkeys.images.first['url']
-      arctic_monkeys.genres
-      arctic_monkeys.popularity
-      arctic_monkeys.external_urls['spotify']
-      arctic_monkeys.id
+      artist_information = artists.first
+      artist = Artist.create(
+        name: artist_information.name,
+        image: artist_information.images.first['url'],
+        genres: artist_information.genres,
+        popularity: artist_information.popularity,
+        spotify_url: artist_information.external_urls['spotify'],
+        spotify_id: artist_information.id
+      )
 
       #Get Albums
-      albums = arctic_monkeys.albums
+      albums = artist_information.albums
       albums.each { |album|
         album.name
         album.images.first['url']
         album.external_urls['spotify']
         album.total_tracks
         album.id
-
 
         tracks = album.tracks
         tracks.each { |track|
@@ -41,9 +45,9 @@ namespace :load_data do
         }
       }
 
-
-      puts arctic_monkeys
+      puts "Artist \"" + artist.name + "\" load"
     }
 
+    puts "Finishing data load"
   end
 end
